@@ -25,4 +25,8 @@
         <button (click)="deleteTask(task)">Delete</button>
       </li>
     </ul>
+    <app-confirm-dialog
+    *ngIf="isDialogOpen"
+    (dialogClose)="handleDialogClose($event)">
+  </app-confirm-dialog>
   </div>

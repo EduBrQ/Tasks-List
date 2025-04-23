@@ -14,6 +14,8 @@ interface Task {
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit {
+  isDialogOpen = false;
+  taskToDelete: Task | null = null;
   tasks$ = new BehaviorSubject<Task[]>([]);
   filter$ = new BehaviorSubject<string>('All');
   filteredTasks$ = this.filter$.pipe(
@@ -35,7 +37,7 @@ export class TaskListComponent implements OnInit {
     if (savedTasks) {
       this.tasks$.next(JSON.parse(savedTasks));
     }
-    
+
   }
 
   addTask(): void {
@@ -60,16 +62,23 @@ export class TaskListComponent implements OnInit {
     this.saveTasks();
   }
 
+  setFilter(filter: string): void {
+    this.filter$.next(filter);
+  }
+
   deleteTask(task: Task): void {
-    if (confirm('Are you sure you want to delete this task?')) {
-      const tasks = this.tasks$.getValue().filter(t => t.id !== task.id);
+    this.taskToDelete = task;
+    this.isDialogOpen = true;
+  }
+  
+  handleDialogClose(result: boolean): void {
+    if (result && this.taskToDelete) {
+      const tasks = this.tasks$.getValue().filter(t => t.id !== this.taskToDelete!.id);
       this.tasks$.next(tasks);
       this.saveTasks();
     }
-  }
-
-  setFilter(filter: string): void {
-    this.filter$.next(filter);
+    this.isDialogOpen = false;
+    this.taskToDelete = null;
   }
 
   private saveTasks(): void {
