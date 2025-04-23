@@ -1,59 +1,97 @@
-# TasksList
+# Task List Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 10.
+This is a task management application built with Angular. It allows users to add, filter, mark as completed, and delete tasks. The application is designed with modularity and scalability in mind, following Angular best practices.
+
+---
+
+## Features
+
+- **Add Tasks**: Users can add new tasks with a title.
+- **Mark as Completed**: Tasks can be marked as completed using a checkbox.
+- **Filter Tasks**: Tasks can be filtered by status (All, Completed, Incomplete).
+- **Delete Tasks**: Tasks can be deleted with a confirmation dialog.
+- **Persistent Storage**: Tasks are saved in the browser's `localStorage` to persist data across sessions.
+
+---
+
+## Project Structure
+
+Technologies Used
+- Angular: Framework for building the application.
+- RxJS: For reactive state management.
+- TypeScript: Strongly typed JavaScript for better maintainability.
+- SCSS: For modular and reusable styles.
+
+The project follows a modular structure for better scalability and maintainability.
+
+```plaintext
+src/
+├── app/
+│   ├── core/                # Core module for global services and components
+│   │   ├── components/      # Global reusable components
+│   │   ├── services/        # Global services (e.g., StorageService)
+│   │   ├── core.module.ts   # Core module definition
+│   ├── shared/              # Shared module for reusable components, pipes, and directives
+│   │   ├── shared.module.ts # Shared module definition
+│   ├── features/            # Feature modules for specific functionalities
+│   │   ├── task-list/       # Task List feature module
+│   │   │   ├── components/  # Components specific to the Task List feature
+│   │   │   ├── models/      # Models specific to the Task List feature
+│   │   │   ├── task-list.module.ts       # Task List module definition
+│   │   │   ├── task-list-routing.module.ts # Task List routing module
+│   ├── app.module.ts        # Root module
+│   ├── app-routing.module.ts # Root routing module
+├── assets/                  # Static assets (images, fonts, etc.)
+├── environments/            # Environment-specific configurations
+├── styles/                  # Global styles
+```
+
+---
+
+## Installation
+
+To run this project locally, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <repository-folder>
+
+2. Install dependencies:
+    npm install
+
+---
 
 ## Development server
 
-To start a local development server, run:
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
 ## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Build
 
-```bash
-ng generate --help
-```
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-```bash
-ng test
-```
+---
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Further help
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

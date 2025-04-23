@@ -1,0 +1,11 @@
+<ul *ngIf="tasks && tasks.length > 0; else emptyList">
+  <app-task-item
+    *ngFor="let task of tasks"
+    [task]="task"
+    (taskToggled)="toggleTask(task)"
+    (taskDeleted)="deleteTask(task)">
+  </app-task-item>
+</ul>
+<ng-template #emptyList>
+  <p class="empty-list">The list is empty.</p>
+</ng-template>

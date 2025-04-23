@@ -1,0 +1,10 @@
+<div class="dialog-backdrop">
+    <div class="dialog-box">
+      <h2 class="dialog-title">Confirm</h2>
+      <p class="dialog-content">Are you sure you want to delete this task?</p>
+      <div class="dialog-actions">
+        <button class="dialog-button cancel-button" (click)="close(false)">Cancel</button>
+        <button class="dialog-button delete-button" (click)="close(true)">Delete</button>
+      </div>
+    </div>
+  </div>

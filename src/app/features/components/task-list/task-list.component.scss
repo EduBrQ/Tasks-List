@@ -1,0 +1,25 @@
+.task-list {
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.task-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: gainsboro;
+  padding: 25px;
+  border-radius: 16px;
+}

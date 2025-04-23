@@ -1,0 +1,53 @@
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+
+  span {
+    flex: 1;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  span.completed {
+    text-decoration: line-through;
+    color: #888;
+  }
+
+  button {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #e60000;
+  }
+
+  .task-title {
+    font-weight: bold;
+    font-size: 1rem;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
