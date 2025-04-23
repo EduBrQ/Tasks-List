@@ -8,7 +8,7 @@ describe('ConfirmDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConfirmDialogComponent],
+      declarations: [ConfirmDialogComponent]
     }).compileComponents();
   });
 
@@ -18,18 +18,23 @@ describe('ConfirmDialogComponent', () => {
     fixture.detectChanges();
   });
 
+  afterAll(() => {
+    localStorage.clear();
+    component.close(true);
+  });
+
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit "true" when delete button is clicked', () => {
+  it('should emit true when delete button is clicked', () => {
     spyOn(component.dialogClose, 'emit');
     const deleteButton = fixture.debugElement.query(By.css('.delete-button'));
     deleteButton.nativeElement.click();
     expect(component.dialogClose.emit).toHaveBeenCalledWith(true);
   });
 
-  it('should emit "false" when cancel button is clicked', () => {
+  it('should emit false when cancel button is clicked', () => {
     spyOn(component.dialogClose, 'emit');
     const cancelButton = fixture.debugElement.query(By.css('.cancel-button'));
     cancelButton.nativeElement.click();

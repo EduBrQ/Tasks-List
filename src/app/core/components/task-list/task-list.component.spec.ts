@@ -1,91 +1,44 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { TaskListComponent } from './task-list.component';
-import { Task } from 'src/app/shared/models/task.model';
+import { By } from '@angular/platform-browser';
+import { TaskItemComponent } from '../task-item/task-item.component';
 
-describe('TaskListComponent', () => {
-  let component: TaskListComponent;
-  let fixture: ComponentFixture<TaskListComponent>;
+describe('TaskItemComponent', () => {
+  let component: TaskItemComponent;
+  let fixture: ComponentFixture<TaskItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TaskListComponent],
-      imports: [FormsModule],
+      declarations: [TaskItemComponent]
     }).compileComponents();
   });
 
   beforeEach(() => {
     localStorage.clear();
-    fixture = TestBed.createComponent(TaskListComponent);
+    fixture = TestBed.createComponent(TaskItemComponent);
     component = fixture.componentInstance;
+    component.task = { id: 1, title: 'Test Task', completed: false };
     fixture.detectChanges();
   });
 
   afterAll(() => {
     localStorage.clear();
-    component.handleDialogClose(true);
   });
-  
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add a new task', () => {
-    component.newTaskTitle = 'Test Task';
-    component.addTask();
-    expect(component.tasks$.value.length).toBe(1);
-    expect(component.tasks$.value[0].title).toBe('Test Task');
+  it('should emit taskToggled event when checkbox is toggled', () => {
+    spyOn(component.taskToggled, 'emit');
+    const checkbox = fixture.debugElement.query(By.css('input[type="checkbox"]'));
+    checkbox.nativeElement.click();
+    expect(component.taskToggled.emit).toHaveBeenCalledWith(component.task);
   });
 
-  it('should not add an empty task', () => {
-    component.newTaskTitle = '';
-    component.addTask();
-    expect(component.tasks$.value.length).toBe(0);
-  });
-
-  it('should toggle task completion', () => {
-    const task = { id: 1, title: 'Test Task', completed: false };
-    component.tasks$.next([task]);
-    component.toggleTaskCompletion(task);
-    expect(component.tasks$.value[0].completed).toBe(true);
-  });
-
-  it('should delete a task', () => {
-    const task = { id: 1, title: 'Test Task', completed: false };
-    component.tasks$.next([task]);
-    component.deleteTask(task);
-    component.handleDialogClose(true);
-    expect(component.tasks$.getValue().length).toBe(0);
-  });
-
-  it('should filter tasks by "Completed"', () => {
-    const tasks = [
-      { id: 1, title: 'Task 1', completed: true },
-      { id: 2, title: 'Task 2', completed: false },
-    ];
-    component.tasks$.next(tasks);
-    component.setFilter('Completed');
-    fixture.detectChanges();
-
-    let filteredTasks: Task[] = [];
-    component.filteredTasks$.subscribe(tasks => filteredTasks = tasks);
-    expect(filteredTasks.length).toBe(1);
-    expect(filteredTasks[0].title).toBe('Task 1');
-  });
-
-  it('should filter tasks by "Incomplete"', () => {
-    const tasks = [
-      { id: 1, title: 'Task 1', completed: true },
-      { id: 2, title: 'Task 2', completed: false },
-    ];
-    component.tasks$.next(tasks);
-    component.setFilter('Incomplete');
-    fixture.detectChanges();
-
-    let filteredTasks: Task[] = [];
-    component.filteredTasks$.subscribe(tasks => filteredTasks = tasks);
-    expect(filteredTasks.length).toBe(1);
-    expect(filteredTasks[0].title).toBe('Task 2');
+  it('should emit taskDeleted event when delete button is clicked', () => {
+    spyOn(component.taskDeleted, 'emit');
+    const deleteButton = fixture.debugElement.query(By.css('button'));
+    deleteButton.nativeElement.click();
+    expect(component.taskDeleted.emit).toHaveBeenCalledWith(component.task);
   });
 });

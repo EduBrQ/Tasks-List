@@ -14,3 +14,13 @@
     margin: 0;
   }
 }
+
+.task-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: gainsboro;
+  padding: 25px;
+  border-radius: 16px;
+}
