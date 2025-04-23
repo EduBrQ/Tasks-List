@@ -5,28 +5,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TaskListComponent } from './core/components/task-list/task-list.component';
-import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
-import { AddTaskComponent } from './core/components/add-task/add-task.component';
-import { FilterTasksComponent } from './core/components/filter-tasks/filter-tasks.component';
-import { TaskItemComponent } from './core/components/task-item/task-item.component';
-import { TaskListItemsComponent } from './core/components/task-list-items/task-list-items.component';
+import { FeaturesModule } from './features/features.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    TaskListComponent,
-    ConfirmDialogComponent,
-    AddTaskComponent,
-    FilterTasksComponent,
-    TaskItemComponent,
-    TaskListItemsComponent
+    AppComponent
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FeaturesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
