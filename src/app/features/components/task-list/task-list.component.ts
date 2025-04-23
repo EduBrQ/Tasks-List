@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Task } from 'src/app/features/models/task.model';
+import { Task } from '../../models/task.model';
+import { StorageService } from '../../../core/services/storage.service';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
 })
 export class TaskListComponent implements OnInit {
   tasks$ = new BehaviorSubject<Task[]>([]);
   filter$ = new BehaviorSubject<string>('All');
   filteredTasks$ = this.filter$.pipe(
-    map(filter => {
+    map((filter) => {
       const tasks = this.tasks$.getValue();
       if (filter === 'Completed') {
-        return tasks.filter(task => task.completed);
+        return tasks.filter((task) => task.completed);
       } else if (filter === 'Incomplete') {
-        return tasks.filter(task => !task.completed);
+        return tasks.filter((task) => !task.completed);
       }
       return tasks;
     })
@@ -26,10 +27,12 @@ export class TaskListComponent implements OnInit {
   isDialogOpen = false;
   taskToDelete: Task | null = null;
 
+  constructor(private storageService: StorageService) {}
+
   ngOnInit(): void {
-    const savedTasks = localStorage.getItem('tasks');
+    const savedTasks = this.storageService.getItem<Task[]>('tasks');
     if (savedTasks) {
-      this.tasks$.next(JSON.parse(savedTasks) as Task[]);
+      this.tasks$.next(savedTasks);
     }
     this.filter$.next(this.filter$.getValue());
   }
@@ -44,7 +47,7 @@ export class TaskListComponent implements OnInit {
   }
 
   toggleTaskCompletion(task: Task): void {
-    const tasks = this.tasks$.getValue().map(t =>
+    const tasks = this.tasks$.getValue().map((t) =>
       t.id === task.id ? { ...t, completed: !t.completed } : t
     );
     this.tasks$.next(tasks);
@@ -58,7 +61,7 @@ export class TaskListComponent implements OnInit {
 
   handleDialogClose(confirmed: boolean): void {
     if (confirmed && this.taskToDelete) {
-      const tasks = this.tasks$.getValue().filter(t => t.id !== this.taskToDelete.id);
+      const tasks = this.tasks$.getValue().filter((t) => t.id !== this.taskToDelete.id);
       this.tasks$.next(tasks);
       this.saveTasks();
     }
@@ -71,7 +74,7 @@ export class TaskListComponent implements OnInit {
   }
 
   private saveTasks(): void {
-    localStorage.setItem('tasks', JSON.stringify(this.tasks$.getValue()));
+    this.storageService.setItem('tasks', this.tasks$.getValue());
     this.filter$.next(this.filter$.getValue());
   }
 }

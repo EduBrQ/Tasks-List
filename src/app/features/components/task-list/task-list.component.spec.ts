@@ -1,44 +1,54 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { TaskItemComponent } from '../task-item/task-item.component';
+import { TaskListComponent } from './task-list.component';
+import { StorageService } from '../../../core/services/storage.service';
 
-describe('TaskItemComponent', () => {
-  let component: TaskItemComponent;
-  let fixture: ComponentFixture<TaskItemComponent>;
+describe('TaskListComponent', () => {
+  let component: TaskListComponent;
+  let fixture: ComponentFixture<TaskListComponent>;
+  let storageService: jasmine.SpyObj<StorageService>;
 
   beforeEach(async () => {
+    const storageServiceSpy = jasmine.createSpyObj('StorageService', [
+      'getItem',
+      'setItem',
+    ]);
+
     await TestBed.configureTestingModule({
-      declarations: [TaskItemComponent]
+      declarations: [TaskListComponent],
+      providers: [{ provide: StorageService, useValue: storageServiceSpy }],
     }).compileComponents();
+
+    storageService = TestBed.inject(
+      StorageService
+    ) as jasmine.SpyObj<StorageService>;
   });
 
   beforeEach(() => {
-    localStorage.clear();
-    fixture = TestBed.createComponent(TaskItemComponent);
+    fixture = TestBed.createComponent(TaskListComponent);
     component = fixture.componentInstance;
-    component.task = { id: 1, title: 'Test Task', completed: false };
+    storageService.getItem.and.returnValue(null); // Mock no saved tasks
     fixture.detectChanges();
-  });
-
-  afterAll(() => {
-    localStorage.clear();
   });
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit taskToggled event when checkbox is toggled', () => {
-    spyOn(component.taskToggled, 'emit');
-    const checkbox = fixture.debugElement.query(By.css('input[type="checkbox"]'));
-    checkbox.nativeElement.click();
-    expect(component.taskToggled.emit).toHaveBeenCalledWith(component.task);
+  it('should load tasks from storage on init', () => {
+    const mockTasks = [{ id: 1, title: 'Test Task', completed: false }];
+    storageService.getItem.and.returnValue(mockTasks);
+
+    component.ngOnInit();
+
+    expect(storageService.getItem).toHaveBeenCalledWith('tasks');
+    expect(component.tasks$.getValue()).toEqual(mockTasks);
   });
 
-  it('should emit taskDeleted event when delete button is clicked', () => {
-    spyOn(component.taskDeleted, 'emit');
-    const deleteButton = fixture.debugElement.query(By.css('button'));
-    deleteButton.nativeElement.click();
-    expect(component.taskDeleted.emit).toHaveBeenCalledWith(component.task);
+  it('should save tasks to storage when a task is added', () => {
+    component.addTask('New Task');
+    expect(storageService.setItem).toHaveBeenCalledWith(
+      'tasks',
+      component.tasks$.getValue()
+    );
   });
 });
