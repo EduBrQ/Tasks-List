@@ -1,0 +1,8 @@
+<ul>
+    <app-task-item
+      *ngFor="let task of tasks"
+      [task]="task"
+      (taskToggled)="toggleTask(task)"
+      (taskDeleted)="deleteTask(task)">
+    </app-task-item>
+  </ul>

@@ -10,6 +10,7 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
 import { AddTaskComponent } from './core/components/add-task/add-task.component';
 import { FilterTasksComponent } from './core/components/filter-tasks/filter-tasks.component';
 import { TaskItemComponent } from './core/components/task-item/task-item.component';
+import { TaskListItemsComponent } from './core/components/task-list-items/task-list-items.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TaskItemComponent } from './core/components/task-item/task-item.compone
     ConfirmDialogComponent,
     AddTaskComponent,
     FilterTasksComponent,
-    TaskItemComponent
+    TaskItemComponent,
+    TaskListItemsComponent
   ],
   imports: [
     BrowserModule,

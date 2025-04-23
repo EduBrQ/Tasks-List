@@ -8,14 +8,11 @@
   <app-filter-tasks (filterChanged)="setFilter($event)"></app-filter-tasks>
 
   <!-- Task List -->
-  <ul>
-    <app-task-item
-      *ngFor="let task of filteredTasks$ | async"
-      [task]="task"
-      (taskToggled)="toggleTaskCompletion($event)"
-      (taskDeleted)="deleteTask($event)">
-    </app-task-item>
-  </ul>
+  <app-task-list-items
+    [tasks]="filteredTasks$ | async"
+    (taskToggled)="toggleTaskCompletion($event)"
+    (taskDeleted)="deleteTask($event)">
+  </app-task-list-items>
 
   <!-- Confirm Dialog -->
   <app-confirm-dialog
