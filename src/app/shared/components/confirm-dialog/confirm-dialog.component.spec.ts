@@ -41,3 +41,4 @@ describe('ConfirmDialogComponent', () => {
     expect(component.dialogClose.emit).toHaveBeenCalledWith(false);
   });
 });
+

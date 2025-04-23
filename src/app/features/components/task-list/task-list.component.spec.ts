@@ -26,7 +26,7 @@ describe('TaskListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskListComponent);
     component = fixture.componentInstance;
-    storageService.getItem.and.returnValue(null); // Mock no saved tasks
+    storageService.getItem.and.returnValue(null);
     fixture.detectChanges();
   });
 

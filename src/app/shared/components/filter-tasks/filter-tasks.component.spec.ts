@@ -30,3 +30,4 @@ describe('FilterTasksComponent', () => {
     expect(component.filterChanged.emit).toHaveBeenCalledWith('Completed');
   });
 });
+
