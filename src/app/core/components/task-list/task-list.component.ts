@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-}
+import { Task } from 'src/app/shared/models/task.model';
 
 @Component({
   selector: 'app-task-list',
@@ -14,8 +9,6 @@ interface Task {
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit {
-  isDialogOpen = false;
-  taskToDelete: Task | null = null;
   tasks$ = new BehaviorSubject<Task[]>([]);
   filter$ = new BehaviorSubject<string>('All');
   filteredTasks$ = this.filter$.pipe(
@@ -30,26 +23,22 @@ export class TaskListComponent implements OnInit {
     })
   );
 
-  newTaskTitle = '';
+  isDialogOpen = false;
+  taskToDelete: Task | null = null;
 
   ngOnInit(): void {
     const savedTasks = localStorage.getItem('tasks');
     if (savedTasks) {
-      this.tasks$.next(JSON.parse(savedTasks));
+      this.tasks$.next(JSON.parse(savedTasks) as Task[]);
     }
-
+    this.filter$.next(this.filter$.getValue());
   }
 
-  addTask(): void {
-    if (this.newTaskTitle.trim()) {
+  addTask(title: string): void {
+    if (title.trim()) {
       const tasks = this.tasks$.getValue();
-      const newTask: Task = {
-        id: Date.now(),
-        title: this.newTaskTitle.trim(),
-        completed: false
-      };
+      const newTask: Task = { id: Date.now(), title: title.trim(), completed: false };
       this.tasks$.next([...tasks, newTask]);
-      this.newTaskTitle = '';
       this.saveTasks();
     }
   }
@@ -62,23 +51,23 @@ export class TaskListComponent implements OnInit {
     this.saveTasks();
   }
 
-  setFilter(filter: string): void {
-    this.filter$.next(filter);
-  }
-
   deleteTask(task: Task): void {
     this.taskToDelete = task;
     this.isDialogOpen = true;
   }
-  
-  handleDialogClose(result: boolean): void {
-    if (result && this.taskToDelete) {
-      const tasks = this.tasks$.getValue().filter(t => t.id !== this.taskToDelete!.id);
+
+  handleDialogClose(confirmed: boolean): void {
+    if (confirmed && this.taskToDelete) {
+      const tasks = this.tasks$.getValue().filter(t => t.id !== this.taskToDelete.id);
       this.tasks$.next(tasks);
       this.saveTasks();
     }
     this.isDialogOpen = false;
     this.taskToDelete = null;
+  }
+
+  setFilter(filter: string): void {
+    this.filter$.next(filter);
   }
 
   private saveTasks(): void {

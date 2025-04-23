@@ -1,0 +1,8 @@
+<div class="filter-tasks">
+    <label for="filter">Filter:</label>
+    <select id="filter" (change)="onFilterChange($event.target.value)">
+      <option value="All">All</option>
+      <option value="Completed">Completed</option>
+      <option value="Incomplete">Incomplete</option>
+    </select>
+  </div>
